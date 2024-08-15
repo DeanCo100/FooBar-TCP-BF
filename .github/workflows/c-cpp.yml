@@ -1,0 +1,25 @@
+name: C/C++ CI
+
+on:
+  pull_request:
+    branches: [ "FInalStageBranch" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Dependencies And Compiler
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgtest-dev cmake g++
+
+    - name: Configure and Build
+      run: |
+        cmake -B build -S .
+        cmake --build build
+    - name: Run Tests
+      run: |
+        ctest --test-dir build --output-on-failure
